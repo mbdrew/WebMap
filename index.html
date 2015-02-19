@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bootstrap grid system, </title>
+  <meta name="viewport" content="width=devide-width, initial-scale=1.0">
+
+  <!-- Modified from the original (using Crunch) to change breakpoints -->
+  <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+
+  <!-- Bootstrap - should not need this anymore since we are running it locallay (above) -->
+  <!--  <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" media="screen">  -->
+
+  <!-- css mapping components -->
+  <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
+  <link rel="stylesheet" type="text/css" href="http://esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css">  
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+  
+
+  <style>
+    .grey {
+      background-color: #CCC;
+      border: 1px solid black;
+    }
+
+    .nopadding {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .toolbar {
+      height: 50px;
+    }
+    .mapdiv{
+      height: 500px;
+    }
+    .glyphicon{
+      font-size: 2em;
+    }
+    
+    
+  </style>
+  
+</head>
+
+<body>
+
+    <!-- Step 3. Add JS to load the responsive esri map -->
+
+  <script type="text/javascript">
+      // Copied from C:\Bootstrap\bootstrap-map-js-master\bootstrap-map-js-master\src\js
+      var package_path = "/js";
+      var dojoConfig = {
+          packages: [{
+              name: "application",
+              location: package_path
+          }]
+      };
+  </script>
+  <script src="http://js.arcgis.com/3.8"></script>
+
+  <script>
+
+    require(["application/bootstrapmap",
+             "esri/layers/ArcGISDynamicMapServiceLayer",
+             "esri/layers/ArcGISTiledMapServiceLayer",
+             "esri/geometry/Extent",
+             "esri/SpatialReference",
+             "esri/dijit/BasemapLayer",
+             "esri/dijit/Basemap",
+             "esri/dijit/BasemapGallery",
+             "dojo/domReady!"], 
+      function(BootstrapMap, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, Extent, SpatialReference, BasemapLayer, Basemap, BasemapGallery) {
+
+        // Get a reference to the ArcGIS Map class
+        var initExtent = new Extent({ "xmin": 1170000, "ymin": 90000, "xmax": 1263200, "ymax": 181350, "spatialReference": { "wkid": 3433 } });
+        var map = BootstrapMap.create("mapDiv",{
+
+          //center:[1200000,140000],
+          //zoom:12,
+          //scrollWheelZoom: false
+          extent: initExtent});
+
+        dynLayer = new ArcGISDynamicMapServiceLayer("http://maps.lrwu.com/wa/rest/services/MoreLayers/MapServer");
+        tiledLayer = new ArcGISDynamicMapServiceLayer("http://www.pagis.org/ArcGIS/rest/services/MAPS/BaseMap/MapServer");
+
+        console.log("next line is map.addLayer");
+        map.addLayers([tiledLayer, dynLayer]);
+    });
+
+  </script>
+
+  <script>
+        window.onresize = displayWindowSize;
+        window.onload = displayWindowSize;
+
+        function displayWindowSize() {
+            myWidth = window.innerWidth;
+            myHeight = window.innerHeight;
+            // your size calculation code here
+            document.getElementById("dimensions").innerHTML = myWidth + "x" + myHeight;
+        };
+  </script>
+
+  <div class="navbar navbar-inverse">
+    <div class="container">
+      <div class="row">
+          <a href="#" class="navbar-brand">LRW Web Map</a>
+          <button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse navHeaderCollapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li> 
+                  <a href="#"> <i class="glyphicon glyphicon-search"></i> </a>
+              </li>
+              <li>
+                <a href="#"> <i class="glyphicon glyphicon-wrench"></i> </a>
+              </li>
+              <li>
+                <a href="#"> <i class="glyphicon glyphicon-resize-full"></i> </a>
+              </li>
+              <li>
+                <a href="#"> <i class="glyphicon glyphicon-info-sign"></i> </a>
+              </li>
+              <li>
+                <a href="#"> <i class="glyphicon glyphicon-remove"></i> </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10 nopadding">
+            <div id="mapDiv" class="grey mapdiv"></div>
+          </div>
+          <div class="col-md-2 nopadding">
+            <div class="grey mapdiv">second dim map column
+              <p id="dimensions">Foo</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
