@@ -1,0 +1,21 @@
+    .grey {
+      background-color: #CCC;
+      border: 1px solid black;
+    }
+
+    .nopadding {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    .toolbar {
+      height: 50px;
+    }
+
+    .mapdiv{
+      height: 500px;
+    }
+
+    .glyphicon{
+      font-size: 2em;
+    }
