@@ -13,7 +13,8 @@
 
   <!-- css mapping components -->
   <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
-  <link rel="stylesheet" type="text/css" href="http://esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css">  
+  <link rel="stylesheet" type="text/css" href="http://esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css"> 
+  <link rel="stylesheet" type="text/css" href="css/main.css">
 
   <!-- Optional theme -->
   <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -21,36 +22,18 @@
   
 
   <style>
-    .grey {
-      background-color: #CCC;
-      border: 1px solid black;
-    }
 
-    .nopadding {
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-    .toolbar {
-      height: 50px;
-    }
-    .mapdiv{
-      height: 500px;
-    }
-    .glyphicon{
-      font-size: 2em;
-    }
-    
     
   </style>
   
     <script type="text/javascript">
       // Copied from C:\Bootstrap\bootstrap-map-js-master\bootstrap-map-js-master\src\js
-      var package_path = "/js";
+
       var dojoConfig = {
-          packages: [{
-              name: "application",
-              location: package_path
-          }]
+          packages: [
+            {name: "application", location: "/js"},
+            {name: "agsjs", location: "/agsjs"}
+          ]
       };
     </script>
 </head>
@@ -113,8 +96,8 @@
             <div id="mapDiv" class="grey mapdiv"></div>
           </div>
           <div class="col-md-2 nopadding">
-            <div class="grey mapdiv">second dim map column
-              <p id="dimensions">Foo</p>
+            <div class="grey mapdiv">
+              <p id="tocDiv"></p>
             </div>
           </div>
         </div>
