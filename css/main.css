@@ -1,21 +1,28 @@
-    .grey {
-      background-color: #CCC;
-      border: 1px solid black;
-    }
+.grey {
+  background-color: #CCC;
+  border: 1px solid black;
+}
 
-    .nopadding {
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-    
-    .toolbar {
-      height: 50px;
-    }
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
 
-    .mapdiv{
-      height: 500px;
-    }
+.mapdiv{
+  height: 500px;
+}
 
-    .glyphicon{
-      font-size: 2em;
-    }
+.toolIconImg {
+  height: 30px;
+  margin: 10px;
+}
+
+.toolIconImg:hover {
+  height: 35px;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+.toolbarDiv {
+  border: 1px solid white;
+}
