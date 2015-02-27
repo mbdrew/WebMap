@@ -7,6 +7,10 @@ require(["application/bootstrapmap",
          "esri/dijit/Basemap",
          "esri/dijit/BasemapGallery",
          "agsjs/dijit/TOC",
+         "dojo/dom",
+         "dojo/dom-style",
+         "dojo/dom-class",
+         "dojo/on",
          "dojo/domReady!"], 
   function(BootstrapMap, 
     ArcGISDynamicMapServiceLayer, 
@@ -16,8 +20,17 @@ require(["application/bootstrapmap",
     BasemapLayer, 
     Basemap, 
     BasemapGallery,
-    TOC)
+    TOC,
+    dom,
+    domStyle,
+    domClass,
+    on)
     {
+      var myButton = dom.byId("searchBtnDiv");
+      on(myButton, "click", function(evt) {
+        console.log("clicked the search button");
+        ToggleTools("searchBtn");
+      });
 
       // Get a reference to the ArcGIS Map class
       var initExtent = new Extent({ "xmin": 1170000, "ymin": 90000, "xmax": 1263200, "ymax": 181350, "spatialReference": { "wkid": 3433 } });
@@ -58,3 +71,13 @@ require(["application/bootstrapmap",
       map.addLayers([tiledLayer, dynLayer]);
 
     });
+
+function ToggleTools(toolDivString) {
+  console.log("Hello from Toggle Tools: " + toolDivString);
+  openSearchTool();
+}
+
+function openSearchTool() {
+  domClass.replace(dom.byId("searchContainer"), "showSearchContainerHt", "hideSearchContainerHt");
+  domStyle.set(searchBtnDiv, "backgroundColor", "rgb(128,128,128)");
+}
