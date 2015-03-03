@@ -27,12 +27,32 @@
   border: 1px solid white;
 }
 
-.searchToolDiv {
+.toolDisplayDiv {
   width: 225px;
-  height: 50%;
+  height: 0%;
   background-color: red;
   z-index: 10;
   position: absolute;
   top: 0;
   left: 50px;
+}
+
+.hideToolContainer
+{
+   overflow: hidden;
+  -webkit-transition: height 0.5s ease-in;
+  -moz-transition: height 0.5s ease-in;
+  -o-transition: height 0.5s ease-in;
+  transition: height 0.5s ease-in;
+  height: 0px;
+}
+
+.showToolContainer
+{
+  overflow: hidden;
+  -webkit-transition: height 0.5s ease-in;
+  -moz-transition: height 0.5s ease-in;
+  -o-transition: height 0.5s ease-in;
+  transition: height 0.5s ease-in;
+  height: 50%;
 }
