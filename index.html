@@ -46,6 +46,7 @@
 
 
   <script>
+  /*
         window.onresize = displayWindowSize;
         window.onload = displayWindowSize;
 
@@ -55,6 +56,7 @@
             // your size calculation code here
             document.getElementById("dimensions").innerHTML = myWidth + "x" + myHeight;
         };
+  */
   </script>
 
   <div class="navbar navbar-inverse">
@@ -75,22 +77,22 @@
                 </div>
               </li>
               <li>
-                <div id="searchBtnDiv" class="toolbarDiv" title="Get Work Orders">
+                <div id="foo" class="toolbarDiv" title="Get Work Orders">
                   <img class="toolIconImg" src="images/wo_icon.png" alt="Work Orders"/>
                 </div>
               </li>
               <li>
-                <div id="searchBtnDiv" class="toolbarDiv" title="Measure">
+                <div id="foo2" class="toolbarDiv" title="Measure">
                   <img class="toolIconImg" src="images/measurement_icon.png" alt="Measure"/>
                 </div>
               </li>
               <li>
-                <div id="searchBtnDiv" class="toolbarDiv" title="Identify Features">
+                <div id="foo3" class="toolbarDiv" title="Identify Features">
                   <img class="toolIconImg" src="images/id_icon.png" alt="Identify"/>
                 </div>
               </li>
               <li>
-                <div id="searchBtnDiv" class="toolbarDiv" title="Clear Graphics">
+                <div id="foo4" class="toolbarDiv" title="Clear Graphics">
                   <img class="toolIconImg" src="images/check.png" alt="Clear Graphics"/>
                 </div>
               </li>
@@ -107,7 +109,7 @@
               <div id="mapDiv" class="grey mapdiv"></div>
 
               <!-- Search Tool -->
-              <div class="toolDisplayDiv hideToolContainer"> 
+              <div id= "searchTool" class="toolDisplayDiv showToolContainer"> 
                 <div style="line-height: 35px;">Search</div>
                 <div id="addrsearch"></div>
                 <div id="manholesearch"></div>
@@ -115,7 +117,7 @@
               </div>
 
               <!-- Measure Tool -->     
-              <div class="toolDisplayDiv showToolContainer">
+              <div id="measureTool" class="toolDisplayDiv hideToolContainer">
                 <div style="line-height: 35px">Measure</div>
               </div>         
             </div>

@@ -19,6 +19,7 @@ require(["application/bootstrapmap",
          "dojo/dom-style",
          "dojo/dom-class",
          "dojo/on",
+         "dojo/query",
          "dojo/domReady!"], 
   function(BootstrapMap, 
     ArcGISDynamicMapServiceLayer, 
@@ -40,12 +41,13 @@ require(["application/bootstrapmap",
     dom,
     domStyle,
     domClass,
-    on)
+    on,
+    query)
     {
-      var myButton = dom.byId("searchBtnDiv");
-      on(myButton, "click", function(evt) {
-        console.log("clicked the search button");
-        ToggleTools("searchBtn");
+
+      on(dom.byId("searchBtnDiv"), "click", function (evt) {
+        console.log("hello from searchBtnDiv click fn...");
+        ToggleTools("searchBtnDiv");
       });
 
       // Get a reference to the ArcGIS Map class
@@ -210,12 +212,18 @@ require(["application/bootstrapmap",
         //closeSearchTool();
       }  // End zoomTo function  
 
+
+      function ToggleTools(toolDivString) {
+        console.log("Hello from Toggle Tools: " + toolDivString);
+        query(".toolDisplayDiv").forEach(function(node){
+          console.log("hello from foreach loop...");
+        });
+      } // End ToggleTools function
+
+
     });
 
-function ToggleTools(toolDivString) {
-  console.log("Hello from Toggle Tools: " + toolDivString);
-  openSearchTool();
-}
+
 
 function openSearchTool() {
   domClass.replace(dom.byId("searchContainer"), "showSearchContainerHt", "hideSearchContainerHt");
