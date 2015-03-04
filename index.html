@@ -13,18 +13,13 @@
 
   <!-- css mapping components -->
   <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
-  <link rel="stylesheet" type="text/css" href="http://esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css"> 
+  <link rel="stylesheet" href="http://js.arcgis.com/3.12/dijit/themes/claro/claro.css">
+  <link rel="stylesheet" type="text/css" href="http://esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
 
   <!-- Optional theme -->
   <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 
-  
-
-  <style>
-
-    
-  </style>
   
     <script type="text/javascript">
       // Copied from C:\Bootstrap\bootstrap-map-js-master\bootstrap-map-js-master\src\js
@@ -38,7 +33,7 @@
     </script>
 </head>
 
-<body>
+<body class="claro">
 
 
   <script src="http://js.arcgis.com/3.8"></script>
@@ -124,6 +119,7 @@
               <!-- Measure Tool -->     
               <div id="measureTool" class="toolDisplayDiv hideToolContainer">
                 <div style="line-height: 35px">Measure</div>
+                <div id="measurementDiv"></div>
               </div>  
 
               <!-- Measure Tool -->     

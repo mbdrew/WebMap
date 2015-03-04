@@ -14,6 +14,9 @@ require(["application/bootstrapmap",
          "esri/symbols/SimpleFillSymbol",
          "esri/symbols/SimpleMarkerSymbol",
          "esri/symbols/SimpleLineSymbol",
+         "esri/dijit/Measurement",
+         "esri/tasks/GeometryService",
+         "esri/units",
          "dojo/_base/Color",         
          "dojo/dom",
          "dojo/dom-style",
@@ -37,6 +40,9 @@ require(["application/bootstrapmap",
     SimpleFillSymbol,
     SimpleMarkerSymbol,
     SimpleLineSymbol,
+    Measurement,
+    GeometryService,
+    Units,
     Color,
     dom,
     domStyle,
@@ -164,6 +170,17 @@ require(["application/bootstrapmap",
       var handleMS = on(geocoderMS, "select", getMSShape);
 
 
+      // Add the measurement tool object and geometry service
+
+      esriConfig.defaults.geometryService = new GeometryService("http://maps.lrwu.com/wa/rest/services/Utilities/Geometry/GeometryServer");
+      var measurementTool = new Measurement({
+        map: map,
+        defaultAreaUnit: Units.ACRES,
+        defaultLengthUnit: Units.FEET
+      }, dom.byId("measurementDiv"));
+      measurementTool.startup();
+
+
       function getMSShape(evt) {
         // Gets the mapssheet shape
         console.log("The return value is: ");
@@ -243,7 +260,6 @@ require(["application/bootstrapmap",
 
         domClass.add(callingNode, "showToolContainer");
       } // End ToggleTools function
-
 
     });
 
