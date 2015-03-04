@@ -222,8 +222,17 @@ require(["application/bootstrapmap",
 
 
       function ToggleTools(toolName) {
-        // First close all the tool divs, then open the one that called the function.
         console.log("Hello from Toggle Tools: " + toolName);
+
+        // If the calling tool is open, then close it and return.
+        var callingNode = dom.byId(toolName);
+        if (domClass.contains(callingNode, "showToolContainer")) {
+          domClass.remove(callingNode, "showToolContainer");
+          domClass.add(callingNode, "hideToolContainer");
+          return;
+        }
+
+        // First close all the tool divs, then open the one that called the function.
         query(".toolDisplayDiv").forEach(function(node){
           console.log(dojo.attr(node, "id"));
           if (domClass.contains(node, "showToolContainer")) {
@@ -231,8 +240,8 @@ require(["application/bootstrapmap",
             domClass.add(node, "hideToolContainer");
           }
         });
-        var showNode = dom.byId(toolName);
-        domClass.add(showNode, "showToolContainer");
+
+        domClass.add(callingNode, "showToolContainer");
       } // End ToggleTools function
 
 
