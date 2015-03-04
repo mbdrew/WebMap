@@ -238,34 +238,51 @@ require(["application/bootstrapmap",
       }  // End zoomTo function  
 
 
-      function ToggleTools(toolName) {
-        console.log("Hello from Toggle Tools: " + toolName);
+      function ToggleTools(toolId) {
+        console.log("Hello from Toggle Tools: " + toolId);
 
         // If the calling tool is open, then close it and return.
-        var callingNode = dom.byId(toolName);
+        var callingNode = dom.byId(toolId);
         if (domClass.contains(callingNode, "showToolContainer")) {
           domClass.remove(callingNode, "showToolContainer");
           domClass.add(callingNode, "hideToolContainer");
+          closeAndResetTool(toolId);
           return;
         }
 
-        // First close all the tool divs, then open the one that called the function.
+        // First close all the tool divs, then run reset function, then open the one that called the function.
         query(".toolDisplayDiv").forEach(function(node){
           console.log(dojo.attr(node, "id"));
           if (domClass.contains(node, "showToolContainer")) {
             domClass.remove(node, "showToolContainer");
             domClass.add(node, "hideToolContainer");
+            closeAndResetTool(dojo.attr(node, "id"))
           }
         });
 
         domClass.add(callingNode, "showToolContainer");
       } // End ToggleTools function
 
+
+      function closeAndResetTool (toolId) {
+        switch (toolId) {
+          case "measureTool":
+            measurementTool.clearResult();
+            measurementTool.setTool("location", false);
+            measurementTool.setTool("distance", false);
+            measurementTool.setTool("area", false);
+            break;
+          case "searchTool":
+            geocoder.clear();
+            geocoderMH.clear();
+            geocoderMS.clear();
+            break;
+          default:
+            console.log("hit default for case statement!!!!!!!!");
+        }
+
+      }  // End closAndResetTool function
+
     });
 
 
-
-function openSearchTool() {
-  domClass.replace(dom.byId("searchContainer"), "showSearchContainerHt", "hideSearchContainerHt");
-  domStyle.set(searchBtnDiv, "backgroundColor", "rgb(128,128,128)");
-}
