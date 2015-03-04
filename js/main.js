@@ -46,9 +46,17 @@ require(["application/bootstrapmap",
     {
 
       on(dom.byId("searchBtnDiv"), "click", function (evt) {
-        console.log("hello from searchBtnDiv click fn...");
-        ToggleTools("searchBtnDiv");
+        ToggleTools("searchTool");
       });
+
+      on(dom.byId("woBtnDiv"), "click", function (evt) {
+        ToggleTools("workorderTool");
+      });
+
+      on(dom.byId("measureBtnDiv"), "click", function (evt) {
+        ToggleTools("measureTool");
+      });
+
 
       // Get a reference to the ArcGIS Map class
       var initExtent = new Extent({ "xmin": 1170000, "ymin": 90000, "xmax": 1263200, "ymax": 181350, "spatialReference": { "wkid": 3433 } });
@@ -213,11 +221,18 @@ require(["application/bootstrapmap",
       }  // End zoomTo function  
 
 
-      function ToggleTools(toolDivString) {
-        console.log("Hello from Toggle Tools: " + toolDivString);
+      function ToggleTools(toolName) {
+        // First close all the tool divs, then open the one that called the function.
+        console.log("Hello from Toggle Tools: " + toolName);
         query(".toolDisplayDiv").forEach(function(node){
-          console.log("hello from foreach loop...");
+          console.log(dojo.attr(node, "id"));
+          if (domClass.contains(node, "showToolContainer")) {
+            domClass.remove(node, "showToolContainer");
+            domClass.add(node, "hideToolContainer");
+          }
         });
+        var showNode = dom.byId(toolName);
+        domClass.add(showNode, "showToolContainer");
       } // End ToggleTools function
 
 

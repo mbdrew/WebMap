@@ -77,22 +77,22 @@
                 </div>
               </li>
               <li>
-                <div id="foo" class="toolbarDiv" title="Get Work Orders">
+                <div id="woBtnDiv" class="toolbarDiv" title="Get Work Orders">
                   <img class="toolIconImg" src="images/wo_icon.png" alt="Work Orders"/>
                 </div>
               </li>
               <li>
-                <div id="foo2" class="toolbarDiv" title="Measure">
+                <div id="measureBtnDiv" class="toolbarDiv" title="Measure">
                   <img class="toolIconImg" src="images/measurement_icon.png" alt="Measure"/>
                 </div>
               </li>
               <li>
-                <div id="foo3" class="toolbarDiv" title="Identify Features">
+                <div id="idBtnDiv" class="toolbarDiv" title="Identify Features">
                   <img class="toolIconImg" src="images/id_icon.png" alt="Identify"/>
                 </div>
               </li>
               <li>
-                <div id="foo4" class="toolbarDiv" title="Clear Graphics">
+                <div id="clearBtnDiv" class="toolbarDiv" title="Clear Graphics">
                   <img class="toolIconImg" src="images/check.png" alt="Clear Graphics"/>
                 </div>
               </li>
@@ -109,17 +109,32 @@
               <div id="mapDiv" class="grey mapdiv"></div>
 
               <!-- Search Tool -->
-              <div id= "searchTool" class="toolDisplayDiv showToolContainer"> 
+              <div id= "searchTool" class="toolDisplayDiv hideToolContainer"> 
                 <div style="line-height: 35px;">Search</div>
                 <div id="addrsearch"></div>
                 <div id="manholesearch"></div>
                 <div id="mapsheetsearch"></div>                
               </div>
 
+              <!-- WorkOrder Tool -->     
+              <div id="workorderTool" class="toolDisplayDiv hideToolContainer">
+                <div style="line-height: 35px">Get Work Orders</div>
+              </div>              
+
               <!-- Measure Tool -->     
               <div id="measureTool" class="toolDisplayDiv hideToolContainer">
                 <div style="line-height: 35px">Measure</div>
-              </div>         
+              </div>  
+
+              <!-- Measure Tool -->     
+              <div id="idTool" class="toolDisplayDiv hideToolContainer">
+                <div style="line-height: 35px">Identify Attributes</div>
+              </div>  
+
+              <!-- Clear Tool  -->
+              <div id="clearTool" class="toolDisplayDiv hideToolContainer">
+                <div style="line-height: 35px">Clear</div>
+              </div>   
             </div>
 
           </div>
