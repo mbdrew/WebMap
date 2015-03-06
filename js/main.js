@@ -234,7 +234,9 @@ require(["application/bootstrapmap",
         var graphic = new Graphic(evt.result.feature.geometry, symbol);
         map.graphics.add(graphic);
 
-        //closeSearchTool();
+        clearAndResetTool("searchTool");
+        ToggleTools("searchTool");
+
       }  // End zoomTo function  
 
 
@@ -246,7 +248,7 @@ require(["application/bootstrapmap",
         if (domClass.contains(callingNode, "showToolContainer")) {
           domClass.remove(callingNode, "showToolContainer");
           domClass.add(callingNode, "hideToolContainer");
-          closeAndResetTool(toolId);
+          clearAndResetTool(toolId);
           return;
         }
 
@@ -256,7 +258,7 @@ require(["application/bootstrapmap",
           if (domClass.contains(node, "showToolContainer")) {
             domClass.remove(node, "showToolContainer");
             domClass.add(node, "hideToolContainer");
-            closeAndResetTool(dojo.attr(node, "id"))
+            clearAndResetTool(dojo.attr(node, "id"))
           }
         });
 
@@ -264,7 +266,7 @@ require(["application/bootstrapmap",
       } // End ToggleTools function
 
 
-      function closeAndResetTool (toolId) {
+      function clearAndResetTool (toolId) {
         switch (toolId) {
           case "measureTool":
             measurementTool.clearResult();
