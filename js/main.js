@@ -23,6 +23,11 @@ require(["application/bootstrapmap",
          "dojo/dom-class",
          "dojo/on",
          "dojo/query",
+         "dijit/registry",
+         "dojo/parser",
+         "dijit/layout/BorderContainer",
+         "dijit/layout/ContentPane",
+         "dijit/layout/TabContainer",
          "dojo/domReady!"], 
   function(BootstrapMap, 
     ArcGISDynamicMapServiceLayer, 
@@ -48,8 +53,21 @@ require(["application/bootstrapmap",
     domStyle,
     domClass,
     on,
-    query)
+    query,
+    Registry,
+    parser)
     {
+
+      parser.parse();
+
+      var theSewerTab = Registry.byId("sewerTab");
+      var theMHTab = Registry.byId("mhTab");
+      var theMSTab = Registry.byId("mapsheetTab");
+
+      console.log("theSewerTab = " + theSewerTab);
+      console.log("theMHTab = " + theMHTab);
+      console.log("theMSTab = " + theMSTab);
+
 
       on(dom.byId("searchBtnDiv"), "click", function (evt) {
         ToggleTools("searchTool");
@@ -59,6 +77,10 @@ require(["application/bootstrapmap",
         ToggleTools("workorderTool");
       });
 
+      on(dom.byId("idBtnDiv"), "click", function (evt) {
+        enableIdentifyTool();
+      });      
+
       on(dom.byId("measureBtnDiv"), "click", function (evt) {
         ToggleTools("measureTool");
       });
@@ -67,15 +89,26 @@ require(["application/bootstrapmap",
       // Get a reference to the ArcGIS Map class
       var initExtent = new Extent({ "xmin": 1170000, "ymin": 90000, "xmax": 1263200, "ymax": 181350, "spatialReference": { "wkid": 3433 } });
       var map = BootstrapMap.create("mapDiv",{
-
-        //center:[1200000,140000],
-        //zoom:12,
-        //scrollWheelZoom: false
-        extent: initExtent});
+      //center:[1200000,140000],
+      //zoom:12,
+      //scrollWheelZoom: false
+      extent: initExtent});
 
       dynLayer = new ArcGISDynamicMapServiceLayer("http://maps.lrwu.com/wa/rest/services/MoreLayers/MapServer");
       tiledLayer = new ArcGISDynamicMapServiceLayer("http://www.pagis.org/ArcGIS/rest/services/MAPS/BaseMap/MapServer");
 
+      identifyTask = new IdentifyTask("http://maps.lrwu.com/wa/rest/services/MoreLayers/MapServer");
+
+      var identifyFeatsTask;
+      var identifyFeatsParams;
+      var theInfoWin = Registry.byId("tabs").domNode;
+      console.log("theInfoWin" + theInfoWin);
+
+      map.on("load", function (evt) {
+        //map.setLevel(4);
+        map.setMapCursor("default");
+        initMap();
+      });
 
 
             // Code for displaying TOC
@@ -102,7 +135,6 @@ require(["application/bootstrapmap",
       console.log("next line is map.addLayer");
       map.addLayers([tiledLayer, dynLayer]);
 
-      identifyTask = new IdentifyTask("http://maps.lrwu.com/wa/rest/services/MoreLayers/MapServer");
 
       // Add geocoder for addresses
 
@@ -258,7 +290,7 @@ require(["application/bootstrapmap",
           if (domClass.contains(node, "showToolContainer")) {
             domClass.remove(node, "showToolContainer");
             domClass.add(node, "hideToolContainer");
-            clearAndResetTool(dojo.attr(node, "id"))
+            clearAndResetTool(dojo.attr(node, "id"));
           }
         });
 
@@ -285,6 +317,153 @@ require(["application/bootstrapmap",
 
       }  // End closAndResetTool function
 
+      function enableIdentifyTool() {
+        console.log("hello from enableIdentifyTool");
+        map.setMapCursor("crosshair");
+
+        // For testing, toggle these 2 lines
+        idClk = map.on("click", identifyFeatures);
+        //idClk2 = map.on("click", foo);
+        // End for testing
+
+      }   // End enableIdentifyTool function   
+
+
+      // For testing
+      function foo(evt) {
+        var content = "<i>Total features returned: 2</i><table border='1'><tr><th>UPS_MH</th><th>DWN_MH</th><th>PIPEDIAM</th><th>UNITTYPE</th><th>PIPETYPE</th><th>INSTDATE</th><th>UPDPTH</th><th>DOWNDPTH</th></tr><tr><td>9G087</td><td>9G090</td><td>6</td><td>GRAVTY</td><td>DIP</td><td>1/1/1994</td><td>5</td><td>5</td><tr><td>9G090</td><td>9H012</td><td>6</td><td>GRAVTY</td><td>DIP</td><td>1/1/1994</td><td>5</td><td>4</td></tr></table>";
+        map.infoWindow.setContent(content);
+        map.infoWindow.show(evt.mapPoint, map.getInfoWindowAnchor(evt.screenPoint));
+      }
+      // End for testing
+
+
+      function identifyFeatures(evt) {
+        map.graphics.clear();
+        map.setMapCursor("wait");
+
+        identifyFeatsParams.geometry = evt.mapPoint;
+        identifyFeatsParams.mapExtent = map.extent;
+
+        map.infoWindow.resize(415, 200);
+        map.infoWindow.setTitle("Identify Results");
+
+
+        //map.graphics.clear();
+        identifyFeatsTask.execute(identifyFeatsParams, function (idResults) {
+          addToMap(idResults, evt);
+        });
+      }  //End identifyFeatures function
+
+
+
+      function initMap() {
+        // Used to get attributes of features for Identify tool
+        identifyFeatsTask = new IdentifyTask("http://maps.lrwu.com/wa/rest/services/QueryLayers/MapServer");
+        identifyFeatsParams = new esri.tasks.IdentifyParameters();
+        identifyFeatsParams.tolerance = 3;
+        identifyFeatsParams.returnGeometry = true;
+        identifyFeatsParams.layerIds = [0, 1, 2];
+        identifyFeatsParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
+        identifyFeatsParams.width = map.width;
+        identifyFeatsParams.height = map.height;
+        map.infoWindow.setContent(theInfoWin);
+
+        showSewerSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 255, 255]), 3);
+      }  //End intitMap     
+
+      function addToMap(idResults, evt) {
+        console.log("hello from addToMap! Number of features: " + idResults.length);
+        sewerResults = { displayFieldName: null, features: [] };
+        mhResults = { displayFieldName: null, features: [] };
+        mapsheetResults = { displayFieldName: null, features: [] };
+
+        for (var i = 0, il = idResults.length; i < il; i++) {
+          var idResult = idResults[i];
+          if (idResult.layerId === 0) {
+            console.log("idResult.displayFieldName = " + idResult.displayFieldName);
+            mhResults.displayFieldName = idResult.displayFieldName;
+            mhResults.features.push(idResult.feature);
+          }
+          else if (idResult.layerId === 1) {
+            console.log("idResult.displayFieldName = " + idResult.displayFieldName);
+            sewerResults.displayFieldName = idResult.displayFieldName;
+            sewerResults.features.push(idResult.feature);
+          }
+          else if (idResult.layerId === 2) {
+            console.log("idResult.displayFieldName = " + idResult.displayFieldName);
+            mapsheetResults.displayFieldName = idResult.displayFieldName;
+            mapsheetResults.features.push(idResult.feature);
+          }
+        }
+
+        console.log("sewerResults.features.length = " + sewerResults.features.length);
+        console.log("mhResults.features.length = " + mhResults.features.length);
+        console.log("mapsheetResults.features.length = " + mapsheetResults.features.length);
+
+        theSewerTab.setContent(layerTabContent(sewerResults, "sewerResults"));
+        console.log("fixing to start theMHTab.setContent");
+        theMHTab.setContent(layerTabContent(mhResults, "mhResults"));
+        theMSTab.setContent(layerTabContent(mapsheetResults, "mapsheetResults"));
+
+        map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
+      }  // End addToMap
+
+      function layerTabContent(layerResults, layerName) {
+        console.log("hello from layerTabContent");
+        var content = "";
+        switch (layerName) {
+          case "sewerResults":
+            var features = layerResults.features;
+            console.log("sewerResults again features.length = " + features.length);
+            content = "<i>Total features returned: " + features.length + "</i>";
+            content += "<table border='1'><tr><th>UPS_MH</th><th>DWN_MH</th><th>PIPEDIAM</th><th>UNITTYPE</th><th>PIPETYPE</th><th>INSTDATE</th><th>UPDPTH</th><th>DOWNDPTH</th></tr>";
+            for (var i = 0, il = features.length; i < il; i++) {
+              content += "<tr><td>" + features[i].attributes['UPS_MH'] + "</td>";
+// " <a href='#' onclick='showFeature(" + layerName + ".features[" + i + "]); return false;'>(show)</a>
+              content += "<td>" + features[i].attributes['DWN_MH'] + "</td>";
+              content += "<td>" + features[i].attributes['PIPEDIAM'] + "</td>";
+              content += "<td>" + features[i].attributes['UNITTYPE'] + "</td>";
+              content += "<td>" + features[i].attributes['PIPETYPE'] + "</td>";
+              content += "<td>" + features[i].attributes['INSTDATE'] + "</td>";
+              content += "<td>" + features[i].attributes['UPDPTH'] + "</td>";
+              content += "<td>" + features[i].attributes['DOWNDPTH'] + "</td>";
+            }
+            content += "</tr></table>";
+            console.log("SewerResults content = " + content);
+            break;
+          case "mhResults":
+            console.log("layerName = " + layerName);
+            content = "<i>Total features returned: " + layerResults.features.length + "</i>";
+            content += "<table border='1'><tr><th>MH_NO</th><th>SERVSTAT</th><th>MHDPTH</th><th>UNITTYPE</th><th>AREA</th><th>INSTDATE</th><th>DROPMH</th><th>OWN</th></tr>";
+            for (var i = 0, il = layerResults.features.length; i < il; i++) {
+              content += "<tr><td>" + layerResults.features[i].attributes['MH_NO'];
+              content += "<td>" + layerResults.features[i].attributes['SERVSTAT'] + " </td>";
+              content += "<td>" + layerResults.features[i].attributes['MHDPTH'] + " </td>";
+              content += "<td>" + layerResults.features[i].attributes['UNITTYPE'] + " </td>";
+              content += "<td>" + layerResults.features[i].attributes['AREA'] + " </td>";
+              content += "<td>" + layerResults.features[i].attributes['INSTDATE'] + " </td>";
+              content += "<td>" + layerResults.features[i].attributes['DROPMH'] + " </td>";
+              content += "<td>" + layerResults.features[i].attributes['OWN'] + " </td>";
+            }
+            content += "</tr></table>";
+            console.log("mhResults content = " + content);
+            break;
+          case "mapsheetResults":
+            content = "<i>Total features returned: " + layerResults.features.length + "</i>";
+            content += "<table border='1'><tr><th>MAPSHEET</th><th>QUARTER</th><th>SEC</th><th>TWN</th></tr>";
+            for (var i = 0, il = layerResults.features.length; i < il; i++) {
+              content += "<tr><td>" + layerResults.features[i].attributes['MSH'];
+              content += "<td>" + layerResults.features[i].attributes['QUARTER'] + "</td>";
+              content += "<td>" + layerResults.features[i].attributes['SEC'] + "</td>";
+              content += "<td>" + layerResults.features[i].attributes['TWN'] + "</td>";
+            }
+            content += "</tr></table>";
+            console.log("mapsheetResults content = " + content);
+            break;
+        }
+        return content;
+      }  // End layerTabContent
     });
 
 
