@@ -1,3 +1,11 @@
+
+.esriPopup .titleButton.close {
+  right: 3px;
+  background-position: 0 -141px;
+  width: 12px;
+  height: 17px;
+}
+
 .grey {
   background-color: #CCC;
   border: 1px solid black;

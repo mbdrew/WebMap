@@ -1,34 +1,32 @@
 <!doctype html>
-<html>
+<html class="">
 <head>
   <meta charset="utf-8">
-  <title>Bootstrap grid system, </title>
+  <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />  <!-- Turns off compatability view for IE -->
   <meta name="viewport" content="width=devide-width, initial-scale=1.0">
 
-  <!-- Modified from the original (using Crunch) to change breakpoints -->
+  <title>Bootstrap grid system </title>
+
+  <!-- css mapping components -->
+
+  link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dojo/resources/dojo.css">
+
+  <!-- Modified from the original (using Crunch) to change breakpoints: -->
   <link href="css/bootstrap.css" rel="stylesheet" media="screen">
 
   <!-- Bootstrap - should not need this anymore since we are running it locallay (above) -->
   <!--  <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" media="screen">  -->
+  <!-- <link rel="stylesheet" type="text/css" href="http://esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css"> -->
 
-  <!-- css mapping components -->
 
-<!--  <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
-  <link rel="stylesheet" href="http://js.arcgis.com/3.12/dijit/themes/claro/claro.css">
--->
-
-  <link rel="stylesheet" type="text/css" href="http://esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
 
-  <link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
-  <link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
-
-
-  <!-- Optional theme -->
+    <!-- Optional theme: -->
   <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 
+  <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/claro/claro.css?parameter=1">
+  <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css?parameter=1">
   
-
 </head>
 
 <body class="claro">
@@ -159,8 +157,6 @@
     <div id="mhTab" data-dojo-type="dijit/layout/ContentPane" title="Manholes"></div>
     <div id="mapsheetTab" data-dojo-type="dijit/layout/ContentPane" title="Mapsheets"></div>
   </div>
-
-
 
 
   <!-- Latest compiled and minified JavaScript -->
